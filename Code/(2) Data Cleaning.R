@@ -12,7 +12,6 @@
 # libraries: ------------------------------------------------------------------
 library(dplyr)
 library(data.table)
-library(ggplot2)
 
 # directories: ----------------------------------------------------------------
 path <- "/Users/kevin/506FA20/Stats506_Final_Project/Data"
