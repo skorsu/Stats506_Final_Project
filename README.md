@@ -9,6 +9,7 @@ There is much medical research claimed that diabetes and hypertension are associ
 
 ## Repository
 There are three repositories.  
-	- Code: This folder contains the code for the analysis.
-	- Data: This folder contains the data used in the analysis.
-	- Plots: This folder contains the plot resulted from the analysis. These plots will be used in the final report.
+
+	- Code: This folder contains the code for the analysis.  
+	- Data: This folder contains the data used in the analysis.  
+	- Plots: This folder contains the plot resulted from the analysis. These plots will be used in the final report.  
