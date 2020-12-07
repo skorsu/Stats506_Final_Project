@@ -1,12 +1,18 @@
 ## R Script for Downloading the data
 ## This file is a first part of the STATS 506 Fall 2020 Final Project.
 ##
-## (Brief Description)
-## Repalce the first line with a concise title for your script.
-## Then describe your R script here in a few lines here. This 
-## is a good place to document data sources.  
+## This file contains the code for downloading the data from the National 
+## Health and Nutrition Examination Survey (NHANES). There were 16 datasets 
+## downloaded from the NHANES, four datasets for each year cluster.
 ##
-## Author(s): Suppapat Korsurat, skorsu@umich.edu
+##  - DEMO: the demographic data (gender)
+##  - BMX: the body mass index data (weight and height for calculating BMI)
+##  - BPX: the blood pressure data
+##  - DIQ: the diabetes data
+##
+## In the end, the result from this file is the joined dataset.
+##
+## Author: Suppapat Korsurat, skorsu@umich.edu
 ## Updated: November 29, 2020
 
 # libraries: ------------------------------------------------------------------
