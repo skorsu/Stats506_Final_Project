@@ -1,0 +1,43 @@
+---
+title: "Stats 506 (Fall 2020) Final Project"
+author: "Suppapat Korsurat, skorsu@umich.edu"
+date: "`r format.Date(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+    theme: readable
+    toc: yes
+    toc_float: true
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(tidyverse)
+library(gridExtra)
+library(knitr)
+library(foreign)
+library(png)
+library(linguisticsdown) ## Import Picture form GitHub site.
+```
+
+## Introduction
+Approximately 2-3 paragraphs explaining what your question is, why it is interesting, and ending with a high level description of the analysis you did (not the results).
+
+## Data
+
+## Method
+
+Data / Methods: Describe your data source and the methods you used. There should be enough detail here that I could repeat your analysis. Focus on what you did, not how you did it. Include a sentence with a link to a GitHub repository containing your code.
+
+## Result
+
+## Conclusion
+
+## Discussion
+
+Results: What did you find? This should be the largest section and is where all of your tabular/graphical elements go.
+Conclusion / Discussion: What do your results allow us to conclude about the question you posed? What are the strengths and limitations of your analysis?
+
