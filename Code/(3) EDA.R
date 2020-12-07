@@ -106,6 +106,10 @@ eda_cross <- function(vari){
   print(eda_plot)
 }
 
+# Data Structure: -------------------------------------------------------------
+dim(data)
+str(data)
+
 # EDA (1 Variables): ----------------------------------------------------------
 ## Response Variable
 eda_1var(Hypertension)
@@ -130,23 +134,24 @@ ggsave(paste0(path, "Plots/Group.png"),
 hd_table <- data %>% 
   group_by(Hypertension, Diabetes) %>% 
   summarise(n = n()) %>%
-  group_by(Diabetes) %>% 
   mutate(Percent = 100 * n/sum(n))
 
 hd_table$Diabetes <- factor(hd_table$Diabetes)
 hd_table$Diabetes <- relevel(hd_table$Diabetes, 2)
 
 hypertension_diabetes <- ggplot(hd_table, aes(x = Hypertension, y = Percent)) +
-  geom_bar(stat = "identity", width = 0.5, fill = "#74F185") +
+  geom_bar(stat = "identity", width = 0.3, fill = "salmon") +
   facet_grid(. ~ Diabetes, labeller = label_both) +
   theme_bw() +
+  geom_text(aes(label = paste0("(",n,")")), 
+            vjust = 1.5, color = "black", size = 3) +
   geom_text(aes(label = paste0(round(Percent,2), "%")), 
-            vjust = 0.05, color = "black", size = 3) +
+            vjust = -0.25, color = "black", size = 3) +
   scale_y_continuous(name = "Percent", limits = c(0, 100)) +
   scale_x_discrete(limits=c("Yes", "No")) +
   labs(title = "Hypertension status classified by Diabetes")
 
-hypertension_diabetes  
+hypertension_diabetes
 
 ggsave(paste0(path, "Plots/hypertension_diabetes.png"), hypertension_diabetes)
 
