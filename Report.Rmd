@@ -72,7 +72,7 @@ constructed in this analysis: the overall model and the model with the
 interested aspects. For both models, hypertension will be used as a response 
 variable. In addition, the author let "no hypertension" as a reference level. 
 
-The code used in this analysis can be found [here.](https://github.com/skorsu/Stats506_Final_Project/tree/main/Code)
+The github pages, along with code used in this analysis, can be found [here.](https://github.com/skorsu/Stats506_Final_Project)
 
 ## Result
 
