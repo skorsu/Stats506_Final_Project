@@ -1,10 +1,20 @@
-## R Script for Downloading the data
+## R Script for Cleaning the data
 ## This file is a second part of the STATS 506 Fall 2020 Final Project.
 ##
-## (Brief Description)
-## Repalce the first line with a concise title for your script.
-## Then describe your R script here in a few lines here. This 
-## is a good place to document data sources.  
+## This file contains the code for cleaning the data downloaded from the 
+## National Health and Nutrition Examination Survey (NHANES). This script
+## must be executed after running (1) Download the data.R
+##
+## The things that I had done in this file are
+##  - Filter out the missing value.
+##  - Select the latest record of each respondent's blood pressure and 
+##    cluster the respondent into two groups, depending on their 
+##    blood pressure.
+##  - Classify the obesity status by using the value of the Body 
+##    Mass Index (BMI)
+##  - Categorize each person into different age groups.
+##
+## In the end, the result from this file is the cleaned dataset.
 ##
 ## Author(s): Suppapat Korsurat, skorsu@umich.edu
 ## Updated: November 29, 2020
