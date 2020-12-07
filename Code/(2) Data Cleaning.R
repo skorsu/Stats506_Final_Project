@@ -32,7 +32,7 @@ repo <- "main/"
 data <- suppressWarnings(fread(paste0(main_url, repo, "Data/Data.csv")))
 
 # Blood Pressure: -------------------------------------------------------------
-## I will use the lastest Blood Pressure data for each person.[]
+## I will use the lastest Blood Pressure data for each person.
 bp_col <- c("ID", paste0(c("BPXSY", "BPXDI"), sort(rep(1:4, 2))))
 
 ## I applied the method provided here. https://stackoverflow.com/a/53620767
