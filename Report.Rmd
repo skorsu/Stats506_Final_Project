@@ -12,7 +12,7 @@ output:
     toc: yes
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(ggplot2)
 library(tidyverse)
@@ -22,6 +22,14 @@ library(foreign)
 library(png)
 library(linguisticsdown) ## Import Picture form GitHub site.
 ```
+
+
+```{r plot_url, include = FALSE}
+plot_url1 <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
+plot_url2 <- "main/Plots/"
+plot_main_url <- paste0(plot_url1, plot_url2)
+```
+
 
 ## Introduction
 There is much medical research claimed that diabetes and hypertension are 
@@ -70,6 +78,22 @@ Here is the [link](https://github.com/skorsu/Stats506_Final_Project/tree/main/Co
 the data from this analysis.
 
 ## Result
+
+The data in this analysis contained the record of 20,711 people. The figure 
+below will show the number of respondents for each level of hypertension and 
+diabetes. (27 words)
+
+```{r, echo = FALSE, fig.cap = fig1}
+include_graphics2(paste0(plot_main_url, "hypertension_diabetes.png"))
+fig1 <- "Figure 1: The bar plot showing the number of respondents in 
+each group and the corresponding percentage."
+```
+
+According to figure 1, 40.27% of the respondent were suffering from 
+hypertension. Besides, 13.38% of the respondent had diabetes. When focusing 
+on each group of diabetes, there is a difference between the group of 
+hypertension. The people with diabetes had a higher chance of suffering from hypertension; however, the inverse trend appears in the people who did not 
+have diabetes. (60 words)
 
 ## Conclusion
 
