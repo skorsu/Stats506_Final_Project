@@ -1,10 +1,10 @@
-## R Script for Downloading the data
+## R Script for performing EDA and building models for analysis.
 ## This file is a third part of the STATS 506 Fall 2020 Final Project.
 ##
-## (Brief Description)
-## Repalce the first line with a concise title for your script.
-## Then describe your R script here in a few lines here. This 
-## is a good place to document data sources.  
+## This file contains the code for performing exploratory data analysis (EDA) 
+## and creating logistic regression models. There are two user-defined 
+## functions, which are eda_1var and eda_cross. This file must be executed 
+## after (2) Data Cleaning.R
 ##
 ## Author(s): Suppapat Korsurat, skorsu@umich.edu
 ## Updated: November 29, 2020

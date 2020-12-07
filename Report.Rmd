@@ -43,16 +43,12 @@ claim is valid for US citizens or not. Hence, this analysis's primary question
 is that "For the US people, Does diabetes affect the prevalence of 
 hypertension?" In addition, the author wants to know whether this claim holds 
 for each level of the aspects or not. Three aspects arouse the author's 
-interests are gender, age, and obesity. (91 words)
-
-The method used in this analysis is the Odd Ratios, retrieving from the 
-logistic regression. The author decided to create two models for this 
-analysis; both of them used hypertension status as a response variable.
-(31 words)
+interests are gender, age, and obesity.
 
 ## Data and Method
-The data used in this analysis is provided by the National Health and Nutrition Examination Survey (NHANES). The author decides to use the data between the 
-year 2011 to 2018. (30 words)
+The data used in this analysis is provided by the National Health and Nutrition
+Examination Survey (NHANES). The author decides to use the data between the 
+year 2011 to 2018.
 
 According to the data, some respondents were collected the blood pressure data 
 more than once. The author decided to use the latest record for each 
@@ -75,17 +71,14 @@ The method used in this analysis is logistic regression. Two models were
 constructed in this analysis: the overall model and the model with the 
 interested aspects. For both models, hypertension will be used as a response 
 variable. In addition, the author let "no hypertension" as a reference level. 
-The model's coefficient can be used as the log of the odds ratios explaining 
-the chance of being suffered from hypertension. (69 words)
 
-Here is the [link](https://github.com/skorsu/Stats506_Final_Project/tree/main/Code/Data%20Downloading%20and%20Cleaning) to the code using for downloading and cleaning 
-the data from this analysis.
+The code used in this analysis can be found [here.](https://github.com/skorsu/Stats506_Final_Project/tree/main/Code)
 
 ## Result
 
 The data in this analysis contained the record of 20,711 people. The figure 
 below will show the number of respondents for each level of hypertension and 
-diabetes. (27 words)
+diabetes.
 
 ```{r figure1, echo = FALSE, fig.cap = fig1}
 include_graphics2(paste0(plot_main_url, "hypertension_diabetes.png"))
@@ -98,11 +91,10 @@ hypertension. Besides, 13.38% of the respondent had diabetes. When focusing
 on each group of diabetes, there is a difference between the group of 
 hypertension. The people with diabetes had a higher chance of suffering from 
 hypertension; however, the inverse trend appears in the people who did not 
-have diabetes. (60 words)
+have diabetes.
 
 Apart from the plot above, the author also considered the effect of diabetes 
 on hypertension for each variable, which are gender, obesity, and age group. 
-(25 words)
 
 ```{r figure2, echo = FALSE, fig.cap = fig2}
 include_graphics2(paste0(plot_main_url, "cross_all.png"))
@@ -116,26 +108,55 @@ hypertension. The author noticed that classes that were different from the
 overall trends shared the typical result; those who belong to the specific 
 class have a higher/lower chance of suffering from hypertension, regardless 
 of diabetes. Those classes are male, obese, all classes from the age groups. 
-(73 words)
 
 To be more precise about the trend and result, two logistic models were 
 constructed. The first model only used diabetes as a predictor. Another model 
-used all variables as predictors. (30 words)
+used all variables as predictors.
 
 For every model, the authors let females in the gender variable, no obesity in 
 the obesity variable, adults in the age group variable, and had diabetes in 
 the diabetes variable be the reference levels. The result for both models 
-showed in table 3. (43 words)
+showed in table 3.
 
 ```{r table3, echo = FALSE}
 kable(output_table)
 ```
 
+Figure 3: The result from both models, which includes Odd ratio, along with 
+its confidence interval, and p-value.
 
 ## Conclusion
+According to table 3, the author drew a conclusion for the overall level that 
+the odds that one will suffer from hypertension if that person had diabetes 
+is 2.04 times higher than the one who did not have diabetes.
+
+Diabetes, nevertheless, has no effect on the prevalence of hypertension when 
+considered with gender, obesity, and age as the p-value of the diabetes 
+variable is higher than 0.05, the statistical significance level. 
+Regardless of the suffering from diabetes, the author concluded three 
+facts from the model.
+
+  - While other factors are fixed, male respondents have a higher chance of 
+  being suffering from hypertension than females by 1.61 times.
+  - The ones whose BMI is greater than 30 tend to suffer from hypertension 
+  than the others by 1.72 times, while other aspects are the same.
+  - The older the respondent, the higher chance that one will suffer from 
+  hypertension for the age groups.
+
+To recapitulate, if considering only the relationship between hypertension and 
+diabetes, one might conclude a relationship between hypertension and diabetes. 
+This relationship, however, disappears when other factors kick into the 
+analysis.
 
 ## Discussion
+The dataset used in this analysis may have an error due to the redundant data. 
+Since the author did know how NHANES do the survey, there might be possible 
+that they collect the data from the same person. For example, one who is 
+surveyed in 2013 might be surveyed again in 2015. If there is some information 
+indicating concerning this issue, the improvement in the data cleaning process
+should be performed in order to improve the quality of the result.
 
-Results: What did you find? This should be the largest section and is where all of your tabular/graphical elements go.
-Conclusion / Discussion: What do your results allow us to conclude about the question you posed? What are the strengths and limitations of your analysis?
+## Reference
+
+
 
