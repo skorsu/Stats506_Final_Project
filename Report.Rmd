@@ -157,6 +157,22 @@ indicating concerning this issue, the improvement in the data cleaning process
 should be performed in order to improve the quality of the result.
 
 ## Reference
+- The link below is used for classifying hypertension status for each 
+respondent by considering the systolic and diastolic.
 
+  - “Understanding Blood Pressure Readings,” www.heart.org. [Online]. Available: https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings.
+  [Accessed: 07-Dec-2020] 
 
+- This link is used for determining the obesity status.
+
+  - "Obesity," www.mayoclinic.org. [Online]. Available:
+  https://www.mayoclinic.org/diseases-conditions/obesity/symptoms-causes/syc-20375742. 
+  [Accessed: 07-Dec-2020] 
+
+- For the age group, the author follow this report.
+
+  - C. D. Fryar, C. M. Hales, G. Zhang, and D. Kruszon-Moran, “Hypertension 
+  Prevalence and Control Among Adults: United States, 2015–2016” [Online]. 
+  Available: https://www.cdc.gov/nchs/data/databriefs/db289.pdf. 
+  [Accessed: 07-Dec-2020] 
 
