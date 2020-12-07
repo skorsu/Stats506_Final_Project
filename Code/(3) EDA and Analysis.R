@@ -161,10 +161,35 @@ data$Gender <- factor(data$Gender)
 data$Obesity <- factor(data$Obesity)
 data$Age_Group <- factor(data$Age_Group)
 
-# Analysis (Overall): ---------------------------------------------------------
-summary(glm(Hypertension ~ Diabetes, data, family = binomial()))
+# Analysis: -------------------------------------------------------------------
+overall_mod <- glm(Hypertension ~ Diabetes, data, family = binomial())
+all_mod <- glm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
+               data, family = binomial())
 
-# Analysis (Group): -----------------------------------------------------------
-summary(glm(Hypertension ~ Diabetes + Gender, data, family = binomial()))
+# Create the final result table: ----------------------------------------------
+result_table <- rbind(summary(overall_mod)$coefficients[-1,c(1,2,4)],
+                      rep(-99,3), ## Additional Line for sepereating tow models
+                      summary(all_mod)$coefficients[-1,c(1,2,4)])
+rownames(result_table) <- NULL
+colnames(result_table) <- c("log_odd", "se", "pval")
+
+model_type <- c("Overall Model", "", "All variables Model", rep("",4))
+variable_class <- c("Diabetes: Yes", "", "Diabetes: Yes", "Gender: Male",
+                    "Obesity: Yes", "Age Group: Middle-Aged", 
+                    "Age Group: Senior")
+
+alpha <- 0.05
+
+output_table <- data.frame(model_type, variable_class, result_table) %>%
+  mutate(odd_ratio = round(exp(log_odd), 2),
+         lower_o = round(exp(log_odd - (abs(qnorm(alpha/2))*se)), 2),
+         upper_o = round(exp(log_odd + (abs(qnorm(alpha/2))*se)), 2),
+         ) %>%
+  mutate(`Odd Ratio` = ifelse(pval == -99, "",
+                              paste0(odd_ratio, 
+                                     " (", lower_o, ",", upper_o, ")")),
+         `p-value` = ifelse(pval == -99, "", round(pval,4))) %>%
+  select(Model = model_type, Class = variable_class, 
+         `Odd Ratio`, `p-value`)
 
 # 79: -------------------------------------------------------------------------

@@ -24,12 +24,16 @@ library(linguisticsdown) ## Import Picture form GitHub site.
 ```
 
 
-```{r plot_url, include = FALSE}
-plot_url1 <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-plot_url2 <- "main/Plots/"
-plot_main_url <- paste0(plot_url1, plot_url2)
+```{r url, include = FALSE}
+main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
+plot_url <- "main/Plots/"
+plot_main_url <- paste0(main_url, plot_url)
 ```
 
+```{r table_url, include = FALSE}
+table_url <- "main/Code/(3)%20EDA%20and%20Analysis.R"
+source(paste0(main_url, table_url))
+```
 
 ## Introduction
 There is much medical research claimed that diabetes and hypertension are 
@@ -83,7 +87,7 @@ The data in this analysis contained the record of 20,711 people. The figure
 below will show the number of respondents for each level of hypertension and 
 diabetes. (27 words)
 
-```{r, echo = FALSE, fig.cap = fig1}
+```{r figure1, echo = FALSE, fig.cap = fig1}
 include_graphics2(paste0(plot_main_url, "hypertension_diabetes.png"))
 fig1 <- "Figure 1: The bar plot showing the number of respondents in 
 each group and the corresponding percentage."
@@ -92,8 +96,36 @@ each group and the corresponding percentage."
 According to figure 1, 40.27% of the respondent were suffering from 
 hypertension. Besides, 13.38% of the respondent had diabetes. When focusing 
 on each group of diabetes, there is a difference between the group of 
-hypertension. The people with diabetes had a higher chance of suffering from hypertension; however, the inverse trend appears in the people who did not 
+hypertension. The people with diabetes had a higher chance of suffering from 
+hypertension; however, the inverse trend appears in the people who did not 
 have diabetes. (60 words)
+
+Apart from the plot above, the author also considered the effect of diabetes 
+on hypertension for each variable, which are gender, obesity, and age group. 
+(25 words)
+
+```{r figure2, echo = FALSE, fig.cap = fig2}
+include_graphics2(paste0(plot_main_url, "cross_all.png"))
+fig2<- "Figure 2: The bar plot showing the percentage classified by 
+hypertension, diabetes, and another aspect."
+```
+
+According to figure 2, most groups had a different trend from the overall 
+level; those who did not have diabetes had a lower chance of suffering from 
+hypertension. The author noticed that classes that were different from the 
+overall trends shared the typical result; those who belong to the specific 
+class have a higher/lower chance of suffering from hypertension, regardless 
+of diabetes. Those classes are male, obese, all classes from the age groups. 
+(73 words)
+
+To be more precise about the trend and result, two logistic models were 
+constructed. The first model only used diabetes as a predictor. Another model 
+used all variables as predictors. The result showed in table 3. (36 words)
+
+```{r table3, echo = FALSE}
+output_table
+```
+
 
 ## Conclusion
 
