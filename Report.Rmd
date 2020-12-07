@@ -120,10 +120,15 @@ of diabetes. Those classes are male, obese, all classes from the age groups.
 
 To be more precise about the trend and result, two logistic models were 
 constructed. The first model only used diabetes as a predictor. Another model 
-used all variables as predictors. The result showed in table 3. (36 words)
+used all variables as predictors. (30 words)
+
+For every model, the authors let females in the gender variable, no obesity in 
+the obesity variable, adults in the age group variable, and had diabetes in 
+the diabetes variable be the reference levels. The result for both models 
+showed in table 3. (43 words)
 
 ```{r table3, echo = FALSE}
-output_table
+kable(output_table)
 ```
 
 
