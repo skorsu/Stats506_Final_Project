@@ -38,7 +38,7 @@ logistic regression. The author decided to create two models for this
 analysis; both of them used hypertension status as a response variable.
 (31 words)
 
-## Data
+## Data and Method
 The data used in this analysis is provided by the National Health and Nutrition Examination Survey (NHANES). The author decides to use the data between the 
 year 2011 to 2018. (30 words)
 
@@ -47,8 +47,7 @@ more than once. The author decided to use the latest record for each
 respondent. After filtering out the respondent who does not have the blood 
 pressure data and the error in the data, the records with systolic less than 60
 mmHG and/or diastolic should higher than 40 mmHG, the author classified the 
-data into two groups by using the criteria provided in this 
-[link](https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings): normal and hypertension. (77 words)
+data into two groups: normal and hypertension. (71 words)
 
 Apart from the blood pressure, the author will use only the respondent whose 
 age is not less than 18 years old at least 18 years old as both hypertension 
@@ -60,11 +59,15 @@ For the obesity status, the Body Mass Index was used to cluster the respondent
 into two groups. The one who has BMI not less than 30 was considered obese; 
 otherwise, he was considered no obese. (30 words)
 
-## Method
+The method used in this analysis is logistic regression. Two models were 
+constructed in this analysis: the overall model and the model with the 
+interested aspects. For both models, hypertension will be used as a response 
+variable. In addition, the author let "no hypertension" as a reference level. 
+The model's coefficient can be used as the log of the odds ratios explaining 
+the chance of being suffered from hypertension. (69 words)
 
-Data / Methods: Describe your data source and the methods you used. There should be enough detail here that I could repeat your analysis. Focus on what you did, not how you did it.
-
-Include a sentence with a link to a GitHub repository containing your code.
+Here is the [link](https://github.com/skorsu/Stats506_Final_Project/tree/main/Code/Data%20Downloading%20and%20Cleaning) to the code using for downloading and cleaning 
+the data from this analysis.
 
 ## Result
 
