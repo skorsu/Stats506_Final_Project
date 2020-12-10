@@ -26,13 +26,14 @@ library(linguisticsdown) ## Import Picture form GitHub site.
 
 ```{r url, include = FALSE}
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-plot_url <- "main/Plots/"
-plot_main_url <- paste0(main_url, plot_url)
+branch <- "kevin-revised/"
+plot_url <- "Plots/"
+plot_main_url <- paste0(main_url, branch, plot_url)
 ```
 
 ```{r table_url, include = FALSE}
-table_url <- "main/Code/(3)%20EDA%20and%20Analysis.R"
-source(paste0(main_url, table_url))
+table_url <- "Code/(3)%20EDA%20and%20Analysis.R"
+source(paste0(main_url, branch, table_url))
 ```
 
 ## Introduction
@@ -92,7 +93,7 @@ below will show the number of respondents for each level of hypertension and
 diabetes.
 
 ```{r figure1, echo = FALSE, fig.cap = fig1}
-include_graphics2(paste0(plot_main_url, "hypertension_diabetes.png"))
+include_graphics2(paste0(plot_main_url, "Hypertension.png"))
 fig1 <- "Figure 1: The bar plot showing the number of respondents in 
 each group and the corresponding percentage."
 ```
@@ -107,10 +108,8 @@ have diabetes.
 Apart from the plot above, the author also considered the effect of diabetes 
 on hypertension for each variable, which are gender, obesity, and age group. 
 
-```{r figure2, echo = FALSE, fig.cap = fig2}
-include_graphics2(paste0(plot_main_url, "cross_all.png"))
-fig2<- "Figure 2: The bar plot showing the percentage classified by 
-hypertension, diabetes, and another aspect."
+```{r figure2, echo = FALSE}
+kable(bal_tab_all)
 ```
 
 According to figure 2, most groups had a different trend from the overall 
