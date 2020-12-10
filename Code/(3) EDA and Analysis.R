@@ -143,41 +143,42 @@ balance_table <- function(vari, data_used = data){
     return()
 }
 
-## Function for EDA (Hypertension x Diabetes x Group)
-eda_cross <- function(vari){
-  eda_tab <- data %>%
-    mutate(Obesity = ifelse(Obesity == "Yes",
-                            "Obesity: Yes", "Obesity: No")) %>%
-    mutate(Gender = ifelse(Gender == "Male", 
-                           "Gender: Male", "Gender: Female")) %>%
-    group_by(Hypertension, Diabetes, {{vari}}) %>%
-    summarise(n = n()) %>%
-    group_by(Hypertension) %>%
-    mutate(Percent = 100 * n/sum(n))
+## Function: Detect the confounding variable.
+### Input: Variable of interested
+### Output: (Number of class for that variable) x 2 tables, providing the 
+###         change in the coefficients.
+
+#### I have applied the method demonstrated in this link.
+#### https://rpubs.com/josevilardy/confounding
+
+confound_detect <- function(vari){
+  ## Full Model
+  all_model <- glm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
+                   data, family = binomial())
+  all_coeff <- all_model$coefficients[-1]
   
-  eda_tab$Diabetes <- factor(eda_tab$Diabetes)
-  levels(eda_tab$Diabetes) <- c("Diabetes: No", "Diabetes: Yes")
-  eda_tab$Diabetes <- relevel(eda_tab$Diabetes, 2)
+  ## Model with only interested variable
+  dummy_data <- data %>% select(Hypertension,{{vari}})
+  interested_model <- glm(Hypertension ~ ., 
+                          dummy_data, family = binomial())
+  interested_coeff <- interested_model$coefficients[-1]
   
-  t1 <- "Hypertension status classified by Diabetes for each "
+  ## Filter only interested coefficients from full model
+  all_coeff <- all_coeff[names(all_coeff) %in% names(interested_coeff)]
   
-  if(colnames(eda_tab)[3] == "Age_Group"){
-    title_plot <- paste0("Age group")
+  ## Create the summary table
+  if(colnames(dummy_data)[2] != "Age_Group"){
+    interested_var = colnames(dummy_data)[2]
   } else {
-    title_plot <- paste0(colnames(eda_tab)[3])
+    interested_var = paste0("Age Group: ", c("Middle-Aged", "Senior"))
   }
   
-  eda_plot <- ggplot(eda_tab, 
-                     aes_string(x = names(eda_tab)[1], 
-                                y = names(eda_tab)[5])) +
-    geom_bar(stat = "identity", width = 0.3, fill = "goldenrod2") +
-    theme_bw() +
-    geom_text(aes(label = paste0(round(Percent,2), "%")), 
-              vjust = 0.05, color = "black", size = 3) +
-    scale_y_continuous(name = "Percent", limits = c(0, 100)) +
-    scale_x_discrete(name = "Hypertension", limits=c("Yes", "No")) +
-    facet_grid(get(colnames(eda_tab)[3]) ~ Diabetes) +
-    labs(title = title_plot)
+  data.frame(all_coeff, interested_coeff) %>%
+    mutate(Variable = interested_var,
+           change = abs(100*(interested_coeff - all_coeff)/all_coeff),
+           Change = paste0(round(change, 2), "%")) %>%
+    select(Variable, "Change in coefficient" = Change) %>%
+    return()
 }
 
 # Exploratory Data Analysis ---------------------------------------------------
@@ -194,74 +195,36 @@ bal_tab_all <- rbind(suppressWarnings(balance_table(Diabetes)),
                      suppressWarnings(balance_table(Gender)),
                      suppressWarnings(balance_table(Age_Group)))
 
-## Groups
-ggsave(paste0(path, "Plots/Group.png"),
-       grid.arrange(eda_1var(Diabetes), 
-                    eda_1var(Obesity), 
-                    eda_1var(Age_Group),
-                    nrow = 2))
-
-# EDA (Hypertension x Diabetes): ----------------------------------------------
-hd_table <- data %>% 
-  group_by(Hypertension, Diabetes) %>% 
-  summarise(n = n()) %>%
-  group_by(Diabetes) %>%
-  mutate(Percent = 100 * n/sum(n))
-
-hd_table$n <- unlist(lapply(hd_table$n, comma_th))
-
-hd_table$Diabetes <- factor(hd_table$Diabetes)
-hd_table$Diabetes <- relevel(hd_table$Diabetes, 2)
-
-hypertension_diabetes <- ggplot(hd_table, aes(x = Hypertension, y = Percent)) +
-  geom_bar(stat = "identity", width = 0.4, fill = "salmon") +
-  facet_grid(. ~ Diabetes, labeller = label_both) +
-  theme_bw() +
-  geom_text(aes(label = paste0("(", n, ")")), 
-            vjust = 1.5, color = "black", size = 3.5) +
-  geom_text(aes(label = paste0(round(Percent,2), "%")), 
-            vjust = -0.25, color = "black", size = 3.5) +
-  scale_y_continuous(name = "Percent", limits = c(0, 100)) +
-  scale_x_discrete(limits=c("Yes", "No")) +
-  labs(title = "Hypertension status classified by Diabetes")
-
-hypertension_diabetes
-
-ggsave(paste0(path, "Plots/hypertension_diabetes.png"), hypertension_diabetes)
-
-# EDA (Hypertension x Diabetes x Group): --------------------------------------
-
-data
-
-c_p <- grid.arrange(eda_cross(Gender), 
-                    eda_cross(Age_Group),
-                    eda_cross(Obesity),
-                    nrow = 2,
-                    top = "Hypertension classified by diabetes and other aspects.")
-
-ggsave(paste0(path, "Plots/cross_all.png"), c_p, width = 15, height = 10)
-
-# Convert all variables into a factor variables -------------------------------
-data$Hypertension <- factor(data$Hypertension)
-data$Diabetes <- factor(data$Diabetes)
-data$Gender <- factor(data$Gender)
-data$Obesity <- factor(data$Obesity)
-data$Age_Group <- factor(data$Age_Group)
-
 # Analysis: -------------------------------------------------------------------
+## Detect the confounding variables
+confounding_table <- rbind(confound_detect(Gender),
+                           confound_detect(Obesity),
+                           confound_detect(Age_Group))
+
+## Models
 overall_mod <- glm(Hypertension ~ Diabetes, data, family = binomial())
 all_mod <- glm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
                data, family = binomial())
+no_confound_mod <- glm(Hypertension ~ Diabetes + Obesity + Age_Group, 
+                       data, family = binomial())
 
-# Create the final result table: ----------------------------------------------
+# Table for comparing both models: --------------------------------------------
 result_table <- rbind(summary(overall_mod)$coefficients[-1,c(1,2,4)],
-                      rep(-99,3), ## Additional Line for sepereating tow models
-                      summary(all_mod)$coefficients[-1,c(1,2,4)])
+                      rep(-99,3), ## Additional Line for sepereating the models
+                      summary(all_mod)$coefficients[-1,c(1,2,4)],
+                      rep(-99,3), ## Additional Line for sepereating the models,
+                      summary(no_confound_mod)$coefficients[-1,c(1,2,4)])
+
 rownames(result_table) <- NULL
 colnames(result_table) <- c("log_odd", "se", "pval")
 
-model_type <- c("Overall Model", "", "All variables Model", rep("",4))
+model_type <- c("Overall Model", "", 
+                "All variables Model", rep("", 5),
+                "Model with no Gender", rep("", 3))
+
 variable_class <- c("Diabetes: Yes", "", "Diabetes: Yes", "Gender: Male",
+                    "Obesity: Yes", "Age Group: Middle-Aged", 
+                    "Age Group: Senior", "", "Diabetes: Yes",
                     "Obesity: Yes", "Age Group: Middle-Aged", 
                     "Age Group: Senior")
 
