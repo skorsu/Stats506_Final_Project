@@ -37,40 +37,51 @@ source(paste0(main_url, table_url))
 
 ## Introduction
 There is much medical research claimed that diabetes and hypertension are 
-associate with each other. Moreover, some of the studies said that diabetes is
-the main factor for developing hypertension. The author curious whether this 
-claim is valid for US citizens or not. Hence, this analysis's primary question 
-is that "For the US people, Does diabetes affect the prevalence of 
-hypertension?" In addition, the author wants to know whether this claim holds 
-for each level of the aspects or not. Three aspects arouse the author's 
-interests are gender, age, and obesity.
+associate with each other. The author curious whether this claim is valid 
+for US citizens or not. Hence, this analysis's primary question is that 
+"For the US people, does diabetes affect the prevalence of hypertension?" 
+The author also wants to know whether this claim still holds if the other 
+factors, which are gender, age, and obesity, are also considered.
+
+The primary method used in this analysis is logistic regression. The author 
+will use the results from the models to conclude the effect of diabetes on 
+hypertension prevalence. 
 
 ## Data and Method
-The data used in this analysis is provided by the National Health and Nutrition
-Examination Survey (NHANES). The author decides to use the data between the 
-year 2011 to 2018.
+The data used in this analysis is provided by the National Health and 
+Nutrition Examination Survey (NHANES). The author decides to use the data 
+between the year 2011 to 2018. The variables used in this analysis are 
+gender (`RIAGENDR`), age (`RIDAGEYR`), weight (`BMXWT`), height (`BMXHT`), 
+diabetes (`DIQ010`), and all blood pressure records (`BPXSY1`, `BPXDI1`, 
+`BPXSY2`, `BPXDI2`, `BPXSY3`, `BPXDI3`, `BPXSY4`, `BPXDI4`). Besides, 
+only the complete records were allowed in this analysis.
 
-According to the data, some respondents were collected the blood pressure data 
-more than once. The author decided to use the latest record for each 
-respondent. After filtering out the respondent who does not have the blood 
-pressure data and the error in the data, the records with systolic less than 60
-mmHG and/or diastolic should higher than 40 mmHG, the author classified the 
-data into two groups: normal and hypertension. (71 words)
+This dataset contained errors and limitations that need to be solved before 
+proceeding the further analysis. Blood pressure data is the first thing that 
+the author noticed the error in it. The latest record of the blood pressure 
+for each respondent will be used. Additionally, the records with systolic less 
+than 60 mmHg and/or diastolic should higher than 40 mmHg were eliminated from 
+the analysis as these might be an error from the measurement device. The 
+second issue is about age. The analysis used only the respondent whose age 
+is at least 18 years old as both hypertension and diabetes might not be 
+detected precisely in children. 
 
-Apart from the blood pressure, the author will use only the respondent whose 
-age is not less than 18 years old at least 18 years old as both hypertension 
-and diabetes might not be detected precisely in children. Furthermore, the 
-author divided the citizen into three groups: adults, middle-aged, 
-and seniors. (51 words)
+Since this analysis focused on hypertension, the new variable name 
+`Hypertension` was created using the blood pressure data. This variable 
+classified people into two groups by applying the criteria that if one has 
+systolic less than 130 and diastolic less than 80, one was classified as no
+hypertension; otherwise, one was classified as hypertension. 
 
-For the obesity status, the Body Mass Index was used to cluster the respondent
-into two groups. The one who has BMI not less than 30 was considered obese; 
-otherwise, he was considered no obese. (30 words)
+Apart from the blood pressure, there were two more new variables: obesity 
+status (`Obesity`) and age group (`Age_Group`). For the obesity variable,  
+if one has a BMI greater than 30, one was considered obese; otherwise, 
+one was considered not obese. For the age group, the author classified the
+respondent into three groups: adults, middle-aged, and seniors.
 
 The method used in this analysis is logistic regression. Two models were 
-constructed in this analysis: the overall model and the model with the 
-interested aspects. For both models, hypertension will be used as a response 
-variable. In addition, the author let "no hypertension" as a reference level. 
+constructed in this analysis. Both models used `Hypertension` as a predictor. 
+For the first model, only diabetes was used as a predictor. The latter model 
+used diabetes, obesity, age group, and gender as predictors. 
 
 The github pages, along with code used in this analysis, can be found [here.](https://github.com/skorsu/Stats506_Final_Project)
 
