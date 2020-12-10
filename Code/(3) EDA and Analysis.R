@@ -210,9 +210,9 @@ no_confound_mod <- glm(Hypertension ~ Diabetes + Obesity + Age_Group,
 
 # Table for comparing both models: --------------------------------------------
 result_table <- rbind(summary(overall_mod)$coefficients[-1,c(1,2,4)],
-                      rep(-99,3), ## Additional Line for sepereating the models
+                      rep(-99,3), ## Additional Line for sepereating models
                       summary(all_mod)$coefficients[-1,c(1,2,4)],
-                      rep(-99,3), ## Additional Line for sepereating the models,
+                      rep(-99,3), ## Additional Line for sepereating models
                       summary(no_confound_mod)$coefficients[-1,c(1,2,4)])
 
 rownames(result_table) <- NULL
