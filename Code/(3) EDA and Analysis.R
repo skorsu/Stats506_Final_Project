@@ -118,9 +118,21 @@ balance_table <- function(vari, data_used = data){
     ungroup() %>%
     spread(Hypertension, n)
   
+  ## Calculate the p-value of the test of independence between
+  ## hypertension and interested variable.
+  pval <- data_used %>% 
+    select(Hypertension, {{vari}}) %>% 
+    table %>% 
+    chisq.test() %>% 
+    .$p.value %>%
+    round(2)
+  
+  pval <- c(pval, rep("", dim(bal_tab)[1] - 1))
+  
   ## Column for Variable Name
   if(colnames(bal_tab)[1] != "Age_Group"){
     v_name <- c(colnames(bal_tab)[1], rep("", dim(bal_tab)[1] - 1))
+    
   } else {
     v_name <- c("Age Group", rep("", dim(bal_tab)[1] - 1))
   }
@@ -135,11 +147,13 @@ balance_table <- function(vari, data_used = data){
                        round(100*No/row_sum, 2), "%)"),
            by_var = paste0(comma_th(bal_tab$row_sum), " (", 
                            round(100*row_sum/sum(row_sum), 2), "%)"),
-           Variable = v_name) %>%
+           Variable = v_name,
+           pval = pval) %>%
     select(Variable, Class,
-           "By Class (%Class)" = by_var,
+           "Total (% Class)" = by_var,
            "Hypertension: Yes" = HY, 
-           "Hypertension: No" = HN) %>%
+           "Hypertension: No" = HN,
+           "p-value" = pval) %>%
     return()
 }
 
