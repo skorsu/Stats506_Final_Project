@@ -150,7 +150,7 @@ balance_table <- function(vari, data_used = data){
            Variable = v_name,
            pval = pval) %>%
     select(Variable, Class,
-           "Total (% Class)" = by_var,
+           "Total (% Total)" = by_var,
            "Hypertension: Yes" = HY, 
            "Hypertension: No" = HN,
            "p-value" = pval) %>%
