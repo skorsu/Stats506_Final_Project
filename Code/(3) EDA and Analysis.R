@@ -125,7 +125,7 @@ balance_table <- function(vari, data_used = data){
     table %>% 
     chisq.test() %>% 
     .$p.value %>%
-    round(2)
+    round(4)
   
   pval <- c(pval, rep("", dim(bal_tab)[1] - 1))
   
@@ -203,57 +203,55 @@ print(eda_1var(Hypertension, "aquamarine2"))
 ggsave(paste0(path, "Plots/Hypertension.png"), 
        eda_1var(Hypertension, "aquamarine2", 4.5))
 
-## Summary Table
+## (Output) Table 1: Descriptive Statistics
 bal_tab_all <- rbind(suppressWarnings(balance_table(Diabetes)),
                      suppressWarnings(balance_table(Obesity)),
                      suppressWarnings(balance_table(Gender)),
                      suppressWarnings(balance_table(Age_Group)))
 
 # Analysis: -------------------------------------------------------------------
+## Create two models: Overall and All variables model.
+overall_mod <- glm(Hypertension ~ Diabetes, data, family = binomial())
+all_mod <- glm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
+               data, family = binomial())
+
 ## Detect the confounding variables
 confounding_table <- rbind(confound_detect(Gender),
                            confound_detect(Obesity),
                            confound_detect(Age_Group))
 
-## Models
-overall_mod <- glm(Hypertension ~ Diabetes, data, family = binomial())
-all_mod <- glm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
-               data, family = binomial())
+## Models withour Gender
 no_confound_mod <- glm(Hypertension ~ Diabetes + Obesity + Age_Group, 
                        data, family = binomial())
 
-# Table for comparing both models: --------------------------------------------
-result_table <- rbind(summary(overall_mod)$coefficients[-1,c(1,2,4)],
-                      rep(-99,3), ## Additional Line for sepereating models
-                      summary(all_mod)$coefficients[-1,c(1,2,4)],
-                      rep(-99,3), ## Additional Line for sepereating models
-                      summary(no_confound_mod)$coefficients[-1,c(1,2,4)])
+# Result Tables: --------------------------------------------------------------
+## (Output) Table 2: Overall Model and All variables Model.
+output_2 <- rbind(summary(overall_mod)$coefficients[-1,c(1,2,4)],
+                  rep(-99,3), ## Additional Line for sepereating models
+                  summary(all_mod)$coefficients[-1,c(1,2,4)])
 
-rownames(result_table) <- NULL
-colnames(result_table) <- c("log_odd", "se", "pval")
+rownames(output_2) <- NULL
+colnames(output_2) <- c("log_odd", "se", "pval")
 
-model_type <- c("Overall Model", "", 
-                "All variables Model", rep("", 5),
-                "Model with no Gender", rep("", 3))
-
+model_type <- c("Overall Model", "", "All variables Model", rep("", 4))
 variable_class <- c("Diabetes: Yes", "", "Diabetes: Yes", "Gender: Male",
-                    "Obesity: Yes", "Age Group: Middle-Aged", 
-                    "Age Group: Senior", "", "Diabetes: Yes",
                     "Obesity: Yes", "Age Group: Middle-Aged", 
                     "Age Group: Senior")
 
 alpha <- 0.05
+change <- c(rep(" ", 3), confounding_table[, 2])
 
-output_table <- data.frame(model_type, variable_class, result_table) %>%
+output_table2 <- data.frame(model_type, variable_class, output_2) %>%
   mutate(odd_ratio = round(exp(log_odd), 2),
          lower_o = round(exp(log_odd - (abs(qnorm(alpha/2))*se)), 2),
          upper_o = round(exp(log_odd + (abs(qnorm(alpha/2))*se)), 2),
-         ) %>%
+  ) %>%
   mutate(`Odd Ratio` = ifelse(pval == -99, "",
                               paste0(odd_ratio, 
                                      " (", lower_o, ",", upper_o, ")")),
-         `p-value` = ifelse(pval == -99, "", round(pval,4))) %>%
+         `p-value` = ifelse(pval == -99, "", round(pval,4)),
+         `Percent Change` = change) %>%
   select(Model = model_type, Class = variable_class, 
-         `Odd Ratio`, `p-value`)
+         `Odd Ratio`, `p-value`, `Percent Change`)
 
 # 79: -------------------------------------------------------------------------
