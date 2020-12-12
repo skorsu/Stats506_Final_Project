@@ -220,12 +220,12 @@ confounding_table <- rbind(confound_detect(Gender),
                            confound_detect(Obesity),
                            confound_detect(Age_Group))
 
-## Models withour Gender
+## Model without Gender
 no_confound_mod <- glm(Hypertension ~ Diabetes + Obesity + Age_Group, 
                        data, family = binomial())
 
 # Result Tables: --------------------------------------------------------------
-## (Output) Table 2: Overall Model and All variables Model.
+## (Output) Table 2: Overall Model and All-variables Model.
 output_2 <- rbind(summary(overall_mod)$coefficients[-1,c(1,2,4)],
                   rep(-99,3), ## Additional Line for sepereating models
                   summary(all_mod)$coefficients[-1,c(1,2,4)])
@@ -233,7 +233,7 @@ output_2 <- rbind(summary(overall_mod)$coefficients[-1,c(1,2,4)],
 rownames(output_2) <- NULL
 colnames(output_2) <- c("log_odd", "se", "pval")
 
-model_type <- c("Overall Model", "", "All variables Model", rep("", 4))
+model_type <- c("Overall Model", "", "All-variables Model", rep("", 4))
 variable_class <- c("Diabetes: Yes", "", "Diabetes: Yes", "Gender: Male",
                     "Obesity: Yes", "Age Group: Middle-Aged", 
                     "Age Group: Senior")
@@ -244,8 +244,7 @@ change <- c(rep(" ", 3), confounding_table[, 2])
 output_table2 <- data.frame(model_type, variable_class, output_2) %>%
   mutate(odd_ratio = round(exp(log_odd), 2),
          lower_o = round(exp(log_odd - (abs(qnorm(alpha/2))*se)), 2),
-         upper_o = round(exp(log_odd + (abs(qnorm(alpha/2))*se)), 2),
-  ) %>%
+         upper_o = round(exp(log_odd + (abs(qnorm(alpha/2))*se)), 2)) %>%
   mutate(`Odd Ratio` = ifelse(pval == -99, "",
                               paste0(odd_ratio, 
                                      " (", lower_o, ",", upper_o, ")")),
@@ -253,5 +252,26 @@ output_table2 <- data.frame(model_type, variable_class, output_2) %>%
          `Percent Change` = change) %>%
   select(Model = model_type, Class = variable_class, 
          `Odd Ratio`, `p-value`, `Percent Change`)
+
+## (Output) Table 3: All-variables Model after removing gender.
+output_3 <- rbind(summary(no_confound_mod)$coefficients[-1,c(1,2,4)])
+
+rownames(output_3) <- NULL
+colnames(output_3) <- c("log_odd", "se", "pval")
+
+variable_class <- c("Diabetes: Yes", "Obesity: Yes", 
+                    "Age Group: Middle-Aged", "Age Group: Senior")
+
+alpha <- 0.05
+
+output_table3 <- data.frame(variable_class, output_3) %>%
+  mutate(odd_ratio = round(exp(log_odd), 2),
+         lower_o = round(exp(log_odd - (abs(qnorm(alpha/2))*se)), 2),
+         upper_o = round(exp(log_odd + (abs(qnorm(alpha/2))*se)), 2)) %>%
+  mutate(`Odd Ratio` = ifelse(pval == -99, "",
+                              paste0(odd_ratio, 
+                                     " (", lower_o, ",", upper_o, ")")),
+         `p-value` = ifelse(pval == -99, "", round(pval,4))) %>%
+  select(Class = variable_class, `Odd Ratio`, `p-value`)
 
 # 79: -------------------------------------------------------------------------
