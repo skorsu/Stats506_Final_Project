@@ -2899,11 +2899,11 @@ div.tocify {
 </table>
 <p>According to table 1, the p-values show that all variables are not independent of hypertension at the significant level of 0.05. In order to be more precise about the relationship between hypertension and diabetes, two logistic models were constructed. The first model only used diabetes as a predictor. Another model used all variables as predictors. The result for both models showed in table 2.</p>
 <table>
-<caption>Table 2: Result of the logistic regression models, the overall model, and all-variable model. For the all-variable model, the percent column indicates the change in coefficient when constructing the simple logistic regression using only the particular predictor only.</caption>
+<caption>Table 2: Result (Odds Ratio, along with its 95% Confidence Interval) of the logistic regression models, the overall model, and all-variable model. For the all-variable model, the percent column indicates the change in coefficient when constructing the simple logistic regression using only the particular predictor only.</caption>
 <thead>
 <tr class="header">
 <th align="left">Model</th>
-<th align="left">Variable</th>
+<th align="left">Variable (Class)</th>
 <th align="left">Odd Ratio</th>
 <th align="left">p-value</th>
 <th align="left">Percent Change</th>
@@ -2964,10 +2964,10 @@ div.tocify {
 <p>According to table 2, the result of the all-variable model showed that diabetes did not have an effect on the prevalence of hypertension, which gainsaid with most of the traditional medical research. The author, hence, tried to investigate whether there was any confounding variable in the model or not.</p>
 <p>By applying the method provided in this <a href="https://rpubs.com/josevilardy/confounding">link</a>, gender is a confounder as the change in the coefficient is greater than 10%. Thus, the author decided to drop the gender variable and refit the model, shown in table 3.</p>
 <table>
-<caption>Table 3: Result of the logistic regression models without gender, the confounding variable.</caption>
+<caption>Table 3: Result (Odds Ratio, along with its 95% Confidence Interval) of the logistic regression models without gender, the confounding variable.</caption>
 <thead>
 <tr class="header">
-<th align="left">Variable</th>
+<th align="left">Variable (Class)</th>
 <th align="left">Odd Ratio</th>
 <th align="right">p-value</th>
 </tr>

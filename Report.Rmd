@@ -24,12 +24,7 @@ library(foreign)
 
 ```{r url, include = FALSE}
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-branch <- "kevin-revised/"
-plot_url <- "Plots/"
-plot_main_url <- paste0(main_url, branch, plot_url)
-```
-
-```{r table_url, include = FALSE}
+branch <- "main/"
 table_url <- "Code/(3)%20EDA%20and%20Analysis.R"
 source(paste0(main_url, branch, table_url))
 ```
@@ -102,10 +97,11 @@ model used all variables as predictors. The result for both models showed
 in table 2.
 
 ```{r table2, echo = FALSE}
-cap2 <- "Table 2: Result of the logistic regression models, the overall model, 
-and all-variable model. For the all-variable model, the percent column 
-indicates the change in coefficient when constructing the simple logistic 
-regression using only the particular predictor only."
+cap2 <- "Table 2: Result (Odds Ratio, along with its 95% Confidence Interval) 
+of the logistic regression models, the overall model, and all-variable model. 
+For the all-variable model, the percent column indicates the change in 
+coefficient when constructing the simple logistic regression using only 
+the particular predictor only."
 
 kable(output_table2, caption = cap2)
 ```
@@ -123,8 +119,8 @@ author decided to drop the gender variable and refit the model, shown in
 table 3.
 
 ```{r table3, echo = FALSE}
-cap3 <- "Table 3: Result of the logistic regression models without gender, 
-the confounding variable."
+cap3 <- "Table 3: Result (Odds Ratio, along with its 95% Confidence Interval) 
+of the logistic regression models without gender, the confounding variable."
 
 kable(output_table3, caption = cap3)
 ```
