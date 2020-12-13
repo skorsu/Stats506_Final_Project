@@ -195,7 +195,7 @@ output_table2 <- data.frame(model_type, variable_class, output_2) %>%
                                      " (", lower_o, ",", upper_o, ")")),
          `p-value` = ifelse(pval == -99, "", round(pval,4)),
          `Percent Change` = change) %>%
-  select(Model = model_type, Variable = variable_class, 
+  select(Model = model_type, `Variable (Class)` = variable_class, 
          `Odd Ratio`, `p-value`, `Percent Change`)
 
 ## (Output) Table 3: All-variables Model after removing gender.
@@ -217,6 +217,6 @@ output_table3 <- data.frame(variable_class, output_3) %>%
                               paste0(odd_ratio, 
                                      " (", lower_o, ",", upper_o, ")")),
          `p-value` = ifelse(pval == -99, "", round(pval,4))) %>%
-  select(Variable = variable_class, `Odd Ratio`, `p-value`)
+  select(`Variable (Class)` = variable_class, `Odd Ratio`, `p-value`)
 
 # 79: -------------------------------------------------------------------------
