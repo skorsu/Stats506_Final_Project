@@ -7,7 +7,7 @@
 ## after (2) Data Cleaning.R
 ##
 ## Author(s): Suppapat Korsurat, skorsu@umich.edu
-## Updated: November 29, 2020
+## Updated: December 12, 2020
 
 # libraries: ------------------------------------------------------------------
 library(tidyverse)
@@ -20,11 +20,6 @@ path <- "/Users/kevin/506FA20/Stats506_Final_Project/"
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
 repo <- "main/"
 data_loc <- "Data/Cleaned_data.csv"
-
-# Create a folder for storing figures -----------------------------------------
-if(! dir.exists(paste0(path, "Plots"))){
-  dir.create((file.path(paste0(path, "Plots"))))
-}
 
 # Data: -----------------------------------------------------------------------
 data <- suppressWarnings(fread(paste0(main_url, repo, data_loc)))
@@ -52,49 +47,6 @@ comma_th <- function(number){
     
     before <- floor(number/1000)
     return(paste0(before, ",", after))
-  }
-}
-
-## Function: Bar chart for one variable.
-### Input: (Required) - Variable name 
-###        (Optional) - Color of the bar (default = "salmon")
-###        (Optional) - Size of the number and percent (default = 3.5)
-### Output: Bar chart
-
-#### I have adapted the method provided in https://stackoverflow.com/a/14577878
-#### in order to use the function input to be the labels of X axis and title of
-#### the plot.
-
-eda_1var <- function(vari, col_bar = "salmon", num_size = 3.5){
-  eda_tab <- data %>% 
-    group_by({{vari}}) %>% 
-    summarise(n = n()) %>% 
-    mutate(Percent = 100 * n/sum(n))
-  
-  eda_tab$n <- unlist(lapply(eda_tab$n, comma_th))
-  
-  eda_plot <- ggplot(eda_tab, 
-                     aes_string(x = names(eda_tab)[1], 
-                                y = names(eda_tab)[3])) +
-    geom_bar(stat = "identity", width = 0.3, fill = col_bar) +
-    theme_bw() +
-    geom_text(aes(label = paste0("(", n, ")")), 
-              vjust = 1.5, color = "black", size = num_size) +
-    geom_text(aes(label = paste0(round(Percent,2), "%")), 
-              vjust = -0.25, color = "black", size = num_size) +
-    scale_y_continuous(name = "Percent", limits = c(0, 100))
-  
-  if(! deparse(substitute(vari)) %in% c("Gender", "Age_Group")){
-    eda_plot <- eda_plot +
-      scale_x_discrete(limits=c("Yes", "No"))
-  }
-  
-  if(deparse(substitute(vari)) == "Age_Group"){
-    eda_plot <- eda_plot +
-      labs(x = "Age Group", title = "Age Group")
-  } else {
-    eda_plot <- eda_plot +
-      labs(x = deparse(substitute(vari)), title = (deparse(substitute(vari)))) 
   }
 }
 
@@ -196,13 +148,6 @@ confound_detect <- function(vari){
 }
 
 # Exploratory Data Analysis ---------------------------------------------------
-
-## Hypertension
-print(eda_1var(Hypertension, "aquamarine2"))
-
-ggsave(paste0(path, "Plots/Hypertension.png"), 
-       eda_1var(Hypertension, "aquamarine2", 4.5))
-
 ## (Output) Table 1: Descriptive Statistics
 bal_tab_all <- rbind(suppressWarnings(balance_table(Diabetes)),
                      suppressWarnings(balance_table(Obesity)),
