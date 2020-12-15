@@ -14,6 +14,7 @@ library(tidyverse)
 library(data.table)
 library(ggplot2)
 library(gridExtra)
+library(survey)
 
 # Directories: ----------------------------------------------------------------
 path <- "/Users/kevin/506FA20/Stats506_Final_Project/"
@@ -93,44 +94,6 @@ balance_table <- function(vari, data_used = data){
     return()
 }
 
-## Function: Detect the confounding variable.
-### Input: Variable of interested
-### Output: (Number of class for that variable) x 2 tables, providing the 
-###         change in the coefficients.
-
-#### I have applied the method demonstrated in this link.
-#### https://rpubs.com/josevilardy/confounding
-
-confound_detect <- function(vari){
-  ## Full Model
-  all_model <- glm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
-                   data, family = binomial())
-  all_coeff <- all_model$coefficients[-1]
-  
-  ## Model with only interested variable
-  dummy_data <- data %>% select(Hypertension,{{vari}})
-  interested_model <- glm(Hypertension ~ ., 
-                          dummy_data, family = binomial())
-  interested_coeff <- interested_model$coefficients[-1]
-  
-  ## Filter only interested coefficients from full model
-  all_coeff <- all_coeff[names(all_coeff) %in% names(interested_coeff)]
-  
-  ## Create the summary table
-  if(colnames(dummy_data)[2] != "Age_Group"){
-    interested_var = colnames(dummy_data)[2]
-  } else {
-    interested_var = paste0("Age Group: ", c("Middle-Aged", "Senior"))
-  }
-  
-  data.frame(all_coeff, interested_coeff) %>%
-    mutate(Variable = interested_var,
-           change = abs(100*(interested_coeff - all_coeff)/all_coeff),
-           Change = paste0(round(change, 2), "%")) %>%
-    select(Variable, "Change in coefficient" = Change) %>%
-    return()
-}
-
 # Exploratory Data Analysis ---------------------------------------------------
 ## (Output) Table 1: Descriptive Statistics
 bal_tab_all <- rbind(suppressWarnings(balance_table(Diabetes)),
@@ -140,14 +103,35 @@ bal_tab_all <- rbind(suppressWarnings(balance_table(Diabetes)),
 
 # Analysis: -------------------------------------------------------------------
 ## Create two models: Overall and All variables model.
-overall_mod <- glm(Hypertension ~ Diabetes, data, family = binomial())
-all_mod <- glm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
-               data, family = binomial())
+design <- svydesign(ids = ~ID, weights = ~Weight, data = data)
 
-## Detect the confounding variables
-confounding_table <- rbind(confound_detect(Gender),
-                           confound_detect(Obesity),
-                           confound_detect(Age_Group))
+overall_mod <- suppressWarnings(
+  svyglm(Hypertension ~ Diabetes, design, family = binomial("logit"))
+  )
+
+all_mod <- suppressWarnings(
+  svyglm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
+               design, family = binomial("logit")))
+
+
+
+## Detecting the confounding variables
+### I have applied the method demonstrated in this link.
+### https://rpubs.com/josevilardy/confounding
+
+coeff_simple <- suppressWarnings(
+  c(as.numeric(summary(svyglm(Hypertension ~ Gender, 
+                              design, 
+                              family = binomial("logit")))$coefficients[2,1]),
+  as.numeric(summary(svyglm(Hypertension ~ Obesity, 
+                            design, 
+                            family = binomial("logit")))$coefficients[2,1]),
+  as.numeric(summary(svyglm(Hypertension ~ Age_Group, 
+                            design, 
+                            family = binomial("logit")))$coefficients[2:3,1])
+))
+
+coeff_multiple <- as.numeric(summary(all_mod)$coefficients[-c(1,2),1])
 
 ## Model without Gender
 no_confound_mod <- glm(Hypertension ~ Diabetes + Obesity + Age_Group, 
@@ -168,7 +152,8 @@ variable_class <- c("Diabetes: Yes", "", "Diabetes: Yes", "Gender: Male",
                     "Age Group: Senior")
 
 alpha <- 0.05
-change <- c(rep(" ", 3), confounding_table[, 2])
+change <- c(rep(" ", 3), 
+            abs(100*(coeff_simple - coeff_multiple)/coeff_multiple))
 
 output_table2 <- data.frame(model_type, variable_class, output_2) %>%
   mutate(odd_ratio = round(exp(log_odd), 2),
