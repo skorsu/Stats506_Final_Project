@@ -113,8 +113,6 @@ all_mod <- suppressWarnings(
   svyglm(Hypertension ~ Diabetes + Gender + Obesity + Age_Group, 
                design, family = binomial("logit")))
 
-
-
 ## Detecting the confounding variables
 ### I have applied the method demonstrated in this link.
 ### https://rpubs.com/josevilardy/confounding
@@ -132,6 +130,7 @@ coeff_simple <- suppressWarnings(
 ))
 
 coeff_multiple <- as.numeric(summary(all_mod)$coefficients[-c(1,2),1])
+coeff_change <- abs(100*(coeff_simple - coeff_multiple)/coeff_multiple)
 
 ## Model without Gender
 no_confound_mod <- glm(Hypertension ~ Diabetes + Obesity + Age_Group, 
@@ -152,8 +151,8 @@ variable_class <- c("Diabetes: Yes", "", "Diabetes: Yes", "Gender: Male",
                     "Age Group: Senior")
 
 alpha <- 0.05
-change <- c(rep(" ", 3), 
-            abs(100*(coeff_simple - coeff_multiple)/coeff_multiple))
+
+change <- c(rep(" ", 3), paste0(round(coeff_change,2), "%"))
 
 output_table2 <- data.frame(model_type, variable_class, output_2) %>%
   mutate(odd_ratio = round(exp(log_odd), 2),
