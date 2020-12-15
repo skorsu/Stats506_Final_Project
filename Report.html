@@ -12,7 +12,7 @@
 
 <meta name="author" content="Suppapat Korsurat, skorsu@umich.edu" />
 
-<meta name="date" content="2020-12-13" />
+<meta name="date" content="2020-12-15" />
 
 <title>Stats 506 (Fall 2020) Final Project</title>
 
@@ -2789,11 +2789,12 @@ div.tocify {
 
 <h1 class="title toc-ignore">Stats 506 (Fall 2020) Final Project</h1>
 <h4 class="author">Suppapat Korsurat, <a href="mailto:skorsu@umich.edu" class="email">skorsu@umich.edu</a></h4>
-<h4 class="date">December 13, 2020</h4>
+<h4 class="date">December 15, 2020</h4>
 
 </div>
 
 
+<p>The github pages, along with code used in this analysis, can be found <a href="https://github.com/skorsu/Stats506_Final_Project">here</a>.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>There is much medical research claimed that diabetes and hypertension are associate with each other. The author curious whether this claim is valid for US citizens or not. Hence, this analysis’s primary question is that “For the US people, does diabetes affect the prevalence of hypertension?” The author also wants to know whether this claim still holds if the other factors, which are gender, age, and obesity, are also considered.</p>
@@ -2804,12 +2805,12 @@ div.tocify {
 <p>The data used in this analysis is provided by the National Health and Nutrition Examination Survey (NHANES). The author decides to use the data between the year 2011 to 2018. The variables used in this analysis are gender, age, weight, height, diabetes, and all blood pressure records.</p>
 <p>Before proceeding to the analysis process, the author performed some data cleaning process. The first is about the blood pressure. The author decided to use the latest record for each respondent. The author also deleted the record with the systolic less than 60 mmHg and/or diastolic less than 40 mmHg as these might be an error from the measurement device. Besides, this analysis used only the respondent whose age is at least 18 years old as both hypertension and diabetes might not be detected precisely in children.</p>
 <p>Apart from the data cleaning process, the author derived three additional variables: hypertension, obesity , and age group. Hypertension was created using blood pressure data. This variable classified people into two groups by applying the criteria that if one has systolic less than 130 mmHg and diastolic less than 80 mmHg, one was classified as no hypertension; otherwise, one was classified as hypertension. For the obesity, if one has a BMI greater than 30, one was considered obese; otherwise, one was considered not obese. For the age group, the author classified the respondent into three groups, adults, middle-aged, and seniors, by following the method proposed in this <a href="https://www.cdc.gov/nchs/data/databriefs/db289.pdf">link</a>.</p>
-<p>For the method used in this analysis, the author decided to use the test of independence to determine whether each variable and hypertension are independent or not. The logistic regressions were also constructed in this analysis by using hypertension as a predictor.</p>
-<p>The github pages, along with code used in this analysis, can be found <a href="https://github.com/skorsu/Stats506_Final_Project">here</a>.</p>
+<p>Since the data used in the analysis is the survey data, the author needed to use survey weight (<code>WTMEC2YR</code>) to adjust each observation. By applying the method proposed in this <a href="https://wwwn.cdc.gov/nchs/data/nhanes/analyticguidelines/11-16-analytic-guidelines.pdf">link</a>, the survey weight is equal to <code>WTMEC2YR</code> divided by four since this analysis used the data from 8 years.</p>
+<p>For the method used in this analysis, the author decided to use the test of independence to determine whether each variable and hypertension are independent or not. The survey logistic regressions were also constructed in this analysis by using hypertension as a predictor.</p>
 </div>
 <div id="result" class="section level2">
 <h2>Result</h2>
-<p>The data in this analysis contained the record of 20,711 people. 40.27% of them are those who suffered from hypertension. Table 1 showed the descriptive statistics for the variables used in this analysis.</p>
+<p>Table 1 showed the descriptive statistics for the variables used in this analysis after adjusting each observation by the survey weight.</p>
 <table>
 <caption>Table 1: Descriptive Statistics for diabetes, obesity, gender, and age group, along with each class’s percentage in each hypertension status and p-value from the test of statistical independence between hypertension and each variable.</caption>
 <thead>
@@ -2826,73 +2827,73 @@ div.tocify {
 <tr class="odd">
 <td align="left">Diabetes</td>
 <td align="left">Yes</td>
-<td align="left">2,771 (13.38%)</td>
-<td align="left">1,536 (55.43%)</td>
-<td align="left">1,235 (44.57%)</td>
+<td align="left">22,335,649 (10.13%)</td>
+<td align="left">11,935,219 (53.44%)</td>
+<td align="left">10,400,429 (46.56%)</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left">No</td>
-<td align="left">17,940 (86.62%)</td>
-<td align="left">6,804 (37.93%)</td>
-<td align="left">11,136 (62.07%)</td>
+<td align="left">198,237,971 (89.87%)</td>
+<td align="left">70,969,321 (35.8%)</td>
+<td align="left">127,268,650 (64.2%)</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">Obesity</td>
 <td align="left">Yes</td>
-<td align="left">7,798 (37.65%)</td>
-<td align="left">3,751 (48.1%)</td>
-<td align="left">4,047 (51.9%)</td>
+<td align="left">83,641,756 (37.92%)</td>
+<td align="left">39,147,325 (46.8%)</td>
+<td align="left">44,494,431 (53.2%)</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left">No</td>
-<td align="left">12,913 (62.35%)</td>
-<td align="left">4,589 (35.54%)</td>
-<td align="left">8,0324 (64.46%)</td>
+<td align="left">136,931,863 (62.08%)</td>
+<td align="left">43,757,215 (31.96%)</td>
+<td align="left">93,174,649 (68.04%)</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">Gender</td>
 <td align="left">Female</td>
-<td align="left">10,608 (51.22%)</td>
-<td align="left">3,784 (35.67%)</td>
-<td align="left">6,824 (64.33%)</td>
+<td align="left">113,469,656 (51.44%)</td>
+<td align="left">37,702,728 (33.23%)</td>
+<td align="left">75,766,928 (66.77%)</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left">Male</td>
-<td align="left">10,103 (48.78%)</td>
-<td align="left">4,556 (45.1%)</td>
-<td align="left">5,547 (54.9%)</td>
+<td align="left">107,103,963 (48.56%)</td>
+<td align="left">45,201,812 (42.2%)</td>
+<td align="left">61,902,151 (57.8%)</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">Age Group</td>
 <td align="left">Adult</td>
-<td align="left">7,770 (37.52%)</td>
-<td align="left">1,663 (21.4%)</td>
-<td align="left">6,107 (78.6%)</td>
+<td align="left">85,492,223 (38.76%)</td>
+<td align="left">18,664,899 (21.83%)</td>
+<td align="left">66,827,324 (78.17%)</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left">Middle-Aged</td>
-<td align="left">6,566 (31.7%)</td>
-<td align="left">2,974 (45.29%)</td>
-<td align="left">3,592 (54.71%)</td>
+<td align="left">78,448,042 (35.57%)</td>
+<td align="left">33,609,036 (42.84%)</td>
+<td align="left">44,839,006 (57.16%)</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left">Senior</td>
-<td align="left">6,375 (30.78%)</td>
-<td align="left">3,703 (58.09%)</td>
-<td align="left">2,672 (41.91%)</td>
+<td align="left">56,633,354 (25.68%)</td>
+<td align="left">30,630,605 (54.09%)</td>
+<td align="left">26,002,749 (45.91%)</td>
 <td align="left"></td>
 </tr>
 </tbody>
@@ -2913,7 +2914,7 @@ div.tocify {
 <tr class="odd">
 <td align="left">Overall Model</td>
 <td align="left">Diabetes: Yes</td>
-<td align="left">2.04 (1.88,2.21)</td>
+<td align="left">2.06 (1.83,2.32)</td>
 <td align="left">0</td>
 <td align="left"></td>
 </tr>
@@ -2927,37 +2928,37 @@ div.tocify {
 <tr class="odd">
 <td align="left">All-variables Model</td>
 <td align="left">Diabetes: Yes</td>
-<td align="left">1.05 (0.97,1.15)</td>
-<td align="left">0.2348</td>
+<td align="left">1.1 (0.97,1.26)</td>
+<td align="left">0.1506</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left">Gender: Male</td>
-<td align="left">1.61 (1.52,1.71)</td>
+<td align="left">1.62 (1.49,1.76)</td>
 <td align="left">0</td>
-<td align="left">18%</td>
+<td align="left">20.68%</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left">Obesity: Yes</td>
-<td align="left">1.72 (1.61,1.83)</td>
+<td align="left">1.86 (1.7,2.03)</td>
 <td align="left">0</td>
-<td align="left">3.82%</td>
+<td align="left">1.36%</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left">Age Group: Middle-Aged</td>
-<td align="left">2.99 (2.78,3.23)</td>
+<td align="left">2.63 (2.38,2.91)</td>
 <td align="left">0</td>
-<td align="left">1.4%</td>
+<td align="left">1.94%</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left">Age Group: Senior</td>
-<td align="left">5.09 (4.71,5.5)</td>
+<td align="left">4.29 (3.85,4.77)</td>
 <td align="left">0</td>
-<td align="left">0.04%</td>
+<td align="left">1.14%</td>
 </tr>
 </tbody>
 </table>
@@ -2975,22 +2976,22 @@ div.tocify {
 <tbody>
 <tr class="odd">
 <td align="left">Diabetes: Yes</td>
-<td align="left">1.09 (1,1.19)</td>
-<td align="right">0.0498</td>
+<td align="left">1.14 (1,1.3)</td>
+<td align="right">0.0422</td>
 </tr>
 <tr class="even">
 <td align="left">Obesity: Yes</td>
-<td align="left">1.63 (1.54,1.74)</td>
+<td align="left">1.81 (1.66,1.97)</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="odd">
 <td align="left">Age Group: Middle-Aged</td>
-<td align="left">2.93 (2.72,3.16)</td>
+<td align="left">2.58 (2.33,2.85)</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="even">
 <td align="left">Age Group: Senior</td>
-<td align="left">4.97 (4.6,5.37)</td>
+<td align="left">4.09 (3.68,4.55)</td>
 <td align="right">0.0000</td>
 </tr>
 </tbody>
@@ -2998,8 +2999,7 @@ div.tocify {
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
-<p>Without considering other factors, the result showed that the odds that one will suffer from hypertension if that person had diabetes is 2.04 times higher than the one who did not have diabetes. Diabetes, nevertheless, has no effect on the prevalence of hypertension when considered with gender, obesity, and age as the p-value of the diabetes variable is higher than 0.05, the statistical significance level. This situation occurred because one of the variables, gender, is a confounding variable detecting by considering the coefficient’s percent change. After excluding gender out from the analysis, the result showed that the odds that one will suffer from hypertension if that person had diabetes is 1.09 times higher than those who did not have diabetes. As a result, diabetes still affects hypertension, but not as high as the first thought.</p>
-<p>To recapitulate, while diabetes plays a significant role in being a cause for the prevalence of hypertension, other aspects can be a cause too. Besides, some aspects might affect the prevalence of diabetes, which lead to error in identifying the relationship between diabetes and hypertension. These aspects need to be excluded from the analysis in order to detect a more precise relationship between diabetes and hypertension.</p>
+<p>Without considering other factors, the result showed that the odds that one will suffer from hypertension if that person had diabetes is 2.06 times higher than the one who did not have diabetes. Diabetes, nevertheless, has no effect on the prevalence of hypertension when considered with gender, obesity, and age as the p-value of the diabetes variable is higher than 0.05, the statistical significance level. This situation occurred because one of the variables, gender, is a confounding variable detecting by considering the coefficient’s percent change. After excluding gender out from the analysis, the result showed that the odds that one will suffer from hypertension if that person had diabetes is 1.14 times higher than those who did not have diabetes. As a result, diabetes still affects hypertension, but not as high as the first thought.</p>
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
@@ -3009,9 +3009,10 @@ div.tocify {
 </div>
 <div id="reference" class="section level2">
 <h2>Reference</h2>
-<p>The reference below is the source of the datasets used in this analysis.</p>
+<p>The reference below is the source of the datasets used in this analysis, along with how to use the survey weight.</p>
 <ul>
 <li>“NHANES Questionnaires, Datasets, and Related Documentation,” <a href="https://wwwn.cdc.gov" class="uri">https://wwwn.cdc.gov</a>. [Online]. Available: <a href="https://wwwn.cdc.gov/nchs/nhanes/Default.aspx" class="uri">https://wwwn.cdc.gov/nchs/nhanes/Default.aspx</a> [Accessed: 29-Nov-2020]</li>
+<li>“National Health and Nutrition Examination Survey:Analytic Guidelines, 2011-2014 and 2015-2016,” <a href="https://wwwn.cdc.gov" class="uri">https://wwwn.cdc.gov</a>. [Online]. Available: <a href="https://wwwn.cdc.gov/nchs/data/nhanes/analyticguidelines/11-16-analytic-guidelines.pdf" class="uri">https://wwwn.cdc.gov/nchs/data/nhanes/analyticguidelines/11-16-analytic-guidelines.pdf</a> [Accessed: 14-Dec-2020]</li>
 </ul>
 <p>These are the references related to creating the new variables: hypertension, obesity, and age group.</p>
 <ul>

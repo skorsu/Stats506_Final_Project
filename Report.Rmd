@@ -12,6 +12,8 @@ output:
     toc: no
 ---
 
+The github pages, along with code used in this analysis, can be found [here](https://github.com/skorsu/Stats506_Final_Project).
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(ggplot2)
@@ -24,7 +26,7 @@ library(foreign)
 
 ```{r url, include = FALSE}
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-branch <- "main/"
+branch <- "kevin-weight/"
 table_url <- "Code/(3)%20EDA%20and%20Analysis.R"
 source(paste0(main_url, branch, table_url))
 ```
@@ -67,18 +69,20 @@ not obese. For the age group, the author classified the respondent into
 three groups, adults, middle-aged, and seniors, by following the method 
 proposed in this [link](https://www.cdc.gov/nchs/data/databriefs/db289.pdf).
 
+Since the data used in the analysis is the survey data, the author needed to 
+use survey weight (`WTMEC2YR`) to adjust each observation. By applying the 
+method proposed in this [link](https://wwwn.cdc.gov/nchs/data/nhanes/analyticguidelines/11-16-analytic-guidelines.pdf), the survey weight is equal to `WTMEC2YR` divided by four 
+since this analysis used the data from 8 years.
+
 For the method used in this analysis, the author decided to use the test of 
 independence to determine whether each variable and hypertension are 
-independent or not. The logistic regressions were also constructed in this 
-analysis by using hypertension as a predictor.
-
-The github pages, along with code used in this analysis, can be found [here](https://github.com/skorsu/Stats506_Final_Project).
+independent or not. The survey logistic regressions were also constructed 
+in this analysis by using hypertension as a predictor.
 
 ## Result
 
-The data in this analysis contained the record of 20,711 people. 40.27% 
-of them are those who suffered from hypertension. Table 1 showed the 
-descriptive statistics for the variables used in this analysis. 
+Table 1 showed the descriptive statistics for the variables used in this 
+analysis after adjusting each observation by the survey weight. 
 
 ```{r table1, echo = FALSE}
 cap1 <- "Table 1: Descriptive Statistics for diabetes, obesity, gender, 
@@ -127,7 +131,7 @@ kable(output_table3, caption = cap3)
 
 ## Conclusion
 Without considering other factors, the result showed that the odds that one 
-will suffer from hypertension if that person had diabetes is 2.04 times higher 
+will suffer from hypertension if that person had diabetes is 2.06 times higher 
 than the one who did not have diabetes. Diabetes, nevertheless, has no effect 
 on the prevalence of hypertension when considered with gender, obesity, and 
 age as the p-value of the diabetes variable is higher than 0.05, the 
@@ -135,17 +139,9 @@ statistical significance level. This situation occurred because one of the
 variables, gender, is a confounding variable detecting by considering the 
 coefficient's percent change. After excluding gender out from the analysis, 
 the result showed that the odds that one will suffer from hypertension if 
-that person had diabetes is 1.09 times higher than those who did not have 
+that person had diabetes is 1.14 times higher than those who did not have 
 diabetes. As a result, diabetes still affects hypertension, but not as high 
 as the first thought.
-
-To recapitulate, while diabetes plays a significant role in being a cause 
-for the prevalence of hypertension, other aspects can be a cause too. Besides, 
-some aspects might affect the prevalence of diabetes, which lead to error in 
-identifying the relationship between diabetes and hypertension. These aspects 
-need to be excluded from the analysis in order to detect a more precise 
-relationship between diabetes and hypertension.
-
 
 ## Discussion
 Since the data used in this analysis was surveyed by NHANES, there are some 
@@ -164,12 +160,17 @@ involve other aspects such as the stress level or the occupation. Including
 other aspects into the analysis may also improve the quality of the result.
 
 ## Reference
-The reference below is the source of the datasets used in this analysis.
+The reference below is the source of the datasets used in this analysis,
+along with how to use the survey weight.
 
   - "NHANES Questionnaires, Datasets, and Related Documentation," 
   https://wwwn.cdc.gov. [Online]. Available: 
   https://wwwn.cdc.gov/nchs/nhanes/Default.aspx
-  [Accessed: 29-Nov-2020] 
+  [Accessed: 29-Nov-2020]
+  - "National Health and Nutrition Examination Survey:Analytic Guidelines, 
+  2011-2014 and 2015-2016, " https://wwwn.cdc.gov. [Online]. Available:
+  https://wwwn.cdc.gov/nchs/data/nhanes/analyticguidelines/11-16-analytic-guidelines.pdf
+  [Accessed: 14-Dec-2020]
 
 These are the references related to creating the new variables: hypertension, 
 obesity, and age group.
