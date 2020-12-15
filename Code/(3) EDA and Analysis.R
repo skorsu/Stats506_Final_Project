@@ -18,43 +18,25 @@ library(gridExtra)
 # Directories: ----------------------------------------------------------------
 path <- "/Users/kevin/506FA20/Stats506_Final_Project/"
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-repo <- "main/"
+repo <- "kevin-weight/"
 data_loc <- "Data/Cleaned_data.csv"
 
 # Data: -----------------------------------------------------------------------
 data <- suppressWarnings(fread(paste0(main_url, repo, data_loc)))
 
 ## Convert the type of variables into factor variables
-data <- data.frame(data[,1], sapply(data[,-1], factor))
+data <- data.frame(data[, c(1, 3)], 
+                   sapply(data[, -c(1, 3)], factor))
 
 # Function: -------------------------------------------------------------------
-
-## Function: Number with comma.
-### Input: Number that you wish to convert into xx,xxx form
-### Output: Number in xx,xxx form
-
-comma_th <- function(number){
-  if(number < 1000){
-    return(paste0(number))
-  }
-  else {
-    after <- number %% 1000
-    if(after <= 9){
-      after <- paste0("00", after)
-    } else if (after <= 99) {
-      after <- paste0("0", after)
-    }
-    
-    before <- floor(number/1000)
-    return(paste0(before, ",", after))
-  }
-}
-
 ## Function: Balance Table
 ### Input: Variable name
 ### Output: (Number of class for that variable) x 5 tables, providing the 
 ###         information on the percentage for each class, along with the 
 ###         percentage by each class of hypertension status.
+
+### For the format of the number, I applied the method from
+### https://stackoverflow.com/a/3838816
 
 balance_table <- function(vari, data_used = data){
   
@@ -66,21 +48,20 @@ balance_table <- function(vari, data_used = data){
   ## Initial the table
   bal_tab <- data_used %>%
     group_by({{vari}}, Hypertension) %>%
-    summarise(n = n()) %>%
+    summarise(n = sum(Weight)) %>%
     ungroup() %>%
     spread(Hypertension, n)
   
   ## Calculate the p-value of the test of independence between
   ## hypertension and interested variable.
-  pval <- data_used %>% 
-    select(Hypertension, {{vari}}) %>% 
-    table %>% 
+  pval <- bal_tab %>%
+    .[, -1] %>%
     chisq.test() %>% 
     .$p.value %>%
     round(4)
   
   pval <- c(pval, rep("", dim(bal_tab)[1] - 1))
-  
+
   ## Column for Variable Name
   if(colnames(bal_tab)[1] != "Age_Group"){
     v_name <- c(colnames(bal_tab)[1], rep("", dim(bal_tab)[1] - 1))
@@ -93,12 +74,15 @@ balance_table <- function(vari, data_used = data){
   colnames(bal_tab)[1] <- "Class"
   bal_tab$row_sum <- apply(bal_tab[,-1], 1, sum)
   bal_tab %>% 
-    mutate(HY = paste0(comma_th(bal_tab$Yes), " (", 
-                       round(100*Yes/row_sum, 2), "%)"),
-           HN = paste0(comma_th(bal_tab$No), " (", 
-                       round(100*No/row_sum, 2), "%)"),
-           by_var = paste0(comma_th(bal_tab$row_sum), " (", 
-                           round(100*row_sum/sum(row_sum), 2), "%)"),
+    mutate(HY = paste0(format(bal_tab$Yes, 
+                              big.mark = ",", scientific = FALSE), 
+                       " (", round(100*Yes/row_sum, 2), "%)"),
+           HN = paste0(format(bal_tab$No,
+                              big.mark = ",", scientific = FALSE), 
+                       " (", round(100*No/row_sum, 2), "%)"),
+           by_var = paste0(format(bal_tab$row_sum, 
+                                  big.mark = ",", scientific = FALSE), 
+                           " (", round(100*row_sum/sum(row_sum), 2), "%)"),
            Variable = v_name,
            pval = pval) %>%
     select(Variable, Class,
@@ -148,6 +132,12 @@ confound_detect <- function(vari){
 }
 
 # Exploratory Data Analysis ---------------------------------------------------
+## EDA: Hypertension
+data %>%
+  group_by(Hypertension) %>%
+  summarise(n = sum(Weight)) %>%
+  mutate(Percent = 100*n/sum(n))
+
 ## (Output) Table 1: Descriptive Statistics
 bal_tab_all <- rbind(suppressWarnings(balance_table(Diabetes)),
                      suppressWarnings(balance_table(Obesity)),
