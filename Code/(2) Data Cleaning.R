@@ -26,7 +26,7 @@ library(data.table)
 # directories: ----------------------------------------------------------------
 path <- "/Users/kevin/506FA20/Stats506_Final_Project/Data"
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-repo <- "main/"
+repo <- "kevin-weight/"
 
 # data: -----------------------------------------------------------------------
 data <- suppressWarnings(fread(paste0(main_url, repo, "Data/Data.csv")))
@@ -80,6 +80,13 @@ data <- data[Age >= 18, ] %>%
   .[, ":=" (Age_Group = ifelse(Age <= 39, "Adult",
                                ifelse(Age >= 60, "Senior", "Middle-Aged")))] %>%
   .[, -c("Age")]
+
+# Weight: ---------------------------------------------------------------------
+## Source: https://wwwn.cdc.gov/nchs/data/nhanes/analyticguidelines/
+##         11-16-analytic-guidelines.pdf
+## Weight need to be adjusted by 1/4
+
+data <- data[, ":=" (Weight = Weight/4)]
 
 # Export to csv ---------------------------------------------------------------
 write.csv(data, paste0(path, "/Cleaned_data.csv"), row.names = FALSE)
