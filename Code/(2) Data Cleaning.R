@@ -26,7 +26,7 @@ library(data.table)
 # directories: ----------------------------------------------------------------
 path <- "/Users/kevin/506FA20/Stats506_Final_Project/Data"
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-repo <- "kevin-weight/"
+repo <- "main/"
 
 # data: -----------------------------------------------------------------------
 data <- suppressWarnings(fread(paste0(main_url, repo, "Data/Data.csv")))
