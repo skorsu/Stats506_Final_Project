@@ -25,7 +25,8 @@ data_loc <- "Data/Cleaned_data.csv"
 data <- suppressWarnings(fread(paste0(main_url, repo, data_loc)))
 
 ## Convert the type of variables into factor variables
-data <- data.frame(data[,1], sapply(data[,-1], factor))
+data <- data.frame(data[, c(1, 3)], 
+                   sapply(data[,-c(1, 3)], factor))
 
 # Function: -------------------------------------------------------------------
 ## Function: Balance Table
