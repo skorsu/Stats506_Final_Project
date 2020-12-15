@@ -18,7 +18,7 @@ library(gridExtra)
 # Directories: ----------------------------------------------------------------
 path <- "/Users/kevin/506FA20/Stats506_Final_Project/"
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-repo <- "main/"
+repo <- "kevin-weight/"
 data_loc <- "Data/Cleaned_data.csv"
 
 # Data: -----------------------------------------------------------------------
