@@ -1,4 +1,4 @@
-## R Script for Downloading the data
+## R Script for Downloading the data and Selecting the required variables
 ## This file is a first part of the STATS 506 Fall 2020 Final Project.
 ##
 ## This file contains the code for downloading the data from the National 
@@ -36,7 +36,7 @@ demo_download <- function(part_url){
   url <- paste0(main_url, part_url)
   read_xpt(url) %>%
     mutate(Gender = ifelse(RIAGENDR == 1, "Male", "Female")) %>%
-    select(ID = SEQN, Gender, Age = RIDAGEYR)
+    select(ID = SEQN, Gender, Age = RIDAGEYR, Weight = WTMEC2YR)
 }
 
 ## BMI Data
