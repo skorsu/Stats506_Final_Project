@@ -26,7 +26,7 @@ library(foreign)
 
 ```{r url, include = FALSE}
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-branch <- "kevin-weight/"
+branch <- "main/"
 table_url <- "Code/(3)%20EDA%20and%20Analysis.R"
 source(paste0(main_url, branch, table_url))
 ```
@@ -169,7 +169,7 @@ along with how to use the survey weight.
   [Accessed: 29-Nov-2020]
   - "National Health and Nutrition Examination Survey:Analytic Guidelines, 
   2011-2014 and 2015-2016, " https://wwwn.cdc.gov. [Online]. Available:
-  https://wwwn.cdc.gov/nchs/data/nhanes/analyticguidelines/11-16-analytic-guidelines.pdf
+  https://wwwn.cdc.gov/nchs/data/nhanes/analyticguidelines/11-16-analytic-guidelines.pdf  
   [Accessed: 14-Dec-2020]
 
 These are the references related to creating the new variables: hypertension, 
