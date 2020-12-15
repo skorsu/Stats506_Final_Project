@@ -18,15 +18,14 @@ library(gridExtra)
 # Directories: ----------------------------------------------------------------
 path <- "/Users/kevin/506FA20/Stats506_Final_Project/"
 main_url <- "https://raw.githubusercontent.com/skorsu/Stats506_Final_Project/"
-repo <- "kevin-weight/"
+repo <- "main/"
 data_loc <- "Data/Cleaned_data.csv"
 
 # Data: -----------------------------------------------------------------------
 data <- suppressWarnings(fread(paste0(main_url, repo, data_loc)))
 
 ## Convert the type of variables into factor variables
-data <- data.frame(data[, c(1, 3)], 
-                   sapply(data[, -c(1, 3)], factor))
+data <- data.frame(data[,1], sapply(data[,-1], factor))
 
 # Function: -------------------------------------------------------------------
 ## Function: Balance Table
@@ -61,7 +60,7 @@ balance_table <- function(vari, data_used = data){
     round(4)
   
   pval <- c(pval, rep("", dim(bal_tab)[1] - 1))
-
+  
   ## Column for Variable Name
   if(colnames(bal_tab)[1] != "Age_Group"){
     v_name <- c(colnames(bal_tab)[1], rep("", dim(bal_tab)[1] - 1))
@@ -69,7 +68,7 @@ balance_table <- function(vari, data_used = data){
   } else {
     v_name <- c("Age Group", rep("", dim(bal_tab)[1] - 1))
   }
-
+  
   ## Create the Summary table
   colnames(bal_tab)[1] <- "Class"
   bal_tab$row_sum <- apply(bal_tab[,-1], 1, sum)
@@ -132,12 +131,6 @@ confound_detect <- function(vari){
 }
 
 # Exploratory Data Analysis ---------------------------------------------------
-## EDA: Hypertension
-data %>%
-  group_by(Hypertension) %>%
-  summarise(n = sum(Weight)) %>%
-  mutate(Percent = 100*n/sum(n))
-
 ## (Output) Table 1: Descriptive Statistics
 bal_tab_all <- rbind(suppressWarnings(balance_table(Diabetes)),
                      suppressWarnings(balance_table(Obesity)),
